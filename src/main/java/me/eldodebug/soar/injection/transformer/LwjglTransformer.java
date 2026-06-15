@@ -18,6 +18,7 @@ public class LwjglTransformer implements IClassTransformer {
     @Override
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
         if (name.equals("org.lwjgl.nanovg.NanoVGGLConfig")) {
+            try {
             ClassReader reader = new ClassReader(basicClass);
             ClassNode node = new ClassNode();
             reader.accept(node, ClassReader.EXPAND_FRAMES);
@@ -53,6 +54,10 @@ public class LwjglTransformer implements IClassTransformer {
             ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
             node.accept(cw);
             return cw.toByteArray();
+            } catch (Exception e) {
+                // Different LWJGL version or platform – return unmodified.
+                return basicClass;
+            }
         }
         return basicClass;
     }

@@ -52,23 +52,36 @@ public class GlideTweaker implements ITweaker {
     @Override
     public void injectIntoClassLoader(LaunchClassLoader classLoader) {
 
-    	classLoader.registerTransformer(LwjglTransformer.class.getName());
-
-        // Unlock LWJGL package BEFORE Mixin config is loaded so the
-        // classloader restriction check on MixinWindowsDisplay passes.
+        // Unlock LWJGL package before Mixin bootstraps so
+        // PACKAGE_CLASSLOADER_EXCLUSION warnings are avoided.
         this.unlockLwjgl();
+
+        // Register the NanoVG GL config patcher only on desktop platforms.
+        // On Android (PojavLauncher) the LWJGL bindings are different and
+        // this transformer is not needed.
+        if (!isAndroid()) {
+            classLoader.registerTransformer(LwjglTransformer.class.getName());
+        }
 
         MixinBootstrap.init();
 
         MixinEnvironment env = MixinEnvironment.getDefaultEnvironment();
 
-        if (env.getObfuscationContext() == null) {
-        	env.setObfuscationContext("notch");
-        }
+        // Do NOT override the obfuscation context here.
+        // FML (Forge) remaps Minecraft classes to SRG names at runtime, so
+        // the Mixin refmap must use "searge" entries (set in build.gradle).
+        // Forcing "notch" here would make Mixin search for Notch-obfuscated
+        // class names (e.g. "afh") inside an SRG-named class hierarchy,
+        // which causes InvalidMixinException "Super class not found" crashes.
 
         env.setSide(MixinEnvironment.Side.CLIENT);
 
         Mixins.addConfiguration("mixins.soar.json");
+    }
+
+    public static boolean isAndroid() {
+        return new java.io.File("/system/build.prop").exists()
+            || System.getProperty("os.name", "").toLowerCase().contains("android");
     }
 
     @Override
