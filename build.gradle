@@ -1,19 +1,14 @@
 buildscript {
     repositories {
-        mavenCentral()
-        jcenter()
         maven {
             name = "forge"
             url = "https://maven.minecraftforge.net"
-//            url = "http://files.minecraftforge.net/maven"
         }
         maven {
             name = 'sponge'
             url = 'https://repo.spongepowered.org/maven'
         }
-        maven {
-            url = 'https://jitpack.io'
-        }
+        mavenCentral()
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
@@ -43,15 +38,13 @@ minecraft {
 
 repositories {
     maven {
-        name "jitpack"
-        url "https://jitpack.io"
+        name "forge"
+        url "https://maven.minecraftforge.net"
     }
-
     maven {
         name "spongepowered"
         url "https://repo.spongepowered.org/maven/"
     }
-    jcenter()
     mavenCentral()
 }
 
@@ -61,12 +54,7 @@ configurations {
 }
 
 dependencies {
-    embed('org.spongepowered:mixin:0.7.11-SNAPSHOT') {
-        exclude module: 'launchwrapper'
-        exclude module: 'guava'
-        exclude module: 'gson'
-        exclude module: 'commons-io'
-    }
+    embed(files('libs/mixin-0.7.11-SNAPSHOT.jar'))
     embed(files('libs/lwjgl-soar.jar'))
     embed(files('libs/lwjgl-soar-natives.jar'))
 }

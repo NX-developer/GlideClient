@@ -99,8 +99,19 @@ public class GlideTweaker implements ITweaker {
         try {
             Field transformerExceptions = LaunchClassLoader.class.getDeclaredField("classLoaderExceptions");
             transformerExceptions.setAccessible(true);
-            Object o = transformerExceptions.get(Launch.classLoader);
-            ((Set<String>) o).remove("org.lwjgl.");
-        } catch (NoSuchFieldException | IllegalAccessException e) {}
+            Set<String> exceptions = (Set<String>) transformerExceptions.get(Launch.classLoader);
+            // Remove LWJGL so Mixin can transform display classes.
+            exceptions.remove("org.lwjgl.");
+            // NX Launcher / MioLibPatcher may add the mod's own package to the
+            // exclusion list, which prevents Mixin from loading mixin classes via
+            // findClass().  Remove every prefix that could cover our package.
+            exceptions.remove("me.eldodebug.");
+            exceptions.remove("me.eldodebug.soar.");
+            exceptions.remove("me.eldodebug.soar.injection.");
+            exceptions.remove("me.eldodebug.soar.injection.mixin.");
+            exceptions.remove("me.eldodebug.soar.injection.mixin.mixins.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
