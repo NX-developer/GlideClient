@@ -53,11 +53,14 @@ public class GlideTweaker implements ITweaker {
     public void injectIntoClassLoader(LaunchClassLoader classLoader) {
 
     	classLoader.registerTransformer(LwjglTransformer.class.getName());
-    	
+
+        // Unlock LWJGL package BEFORE Mixin config is loaded so the
+        // classloader restriction check on MixinWindowsDisplay passes.
+        this.unlockLwjgl();
+
         MixinBootstrap.init();
 
         MixinEnvironment env = MixinEnvironment.getDefaultEnvironment();
-        Mixins.addConfiguration("mixins.soar.json");
 
         if (env.getObfuscationContext() == null) {
         	env.setObfuscationContext("notch");
@@ -65,7 +68,7 @@ public class GlideTweaker implements ITweaker {
 
         env.setSide(MixinEnvironment.Side.CLIENT);
 
-        this.unlockLwjgl();
+        Mixins.addConfiguration("mixins.soar.json");
     }
 
     @Override
