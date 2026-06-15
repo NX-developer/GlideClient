@@ -64,6 +64,18 @@ mixin {
     add sourceSets.main, "mixins.soar.refmap.json"
 }
 
+// Force reobf to use SRG names so mixin superclass references match the
+// Forge runtime class hierarchy (FML remaps Notch→SRG at load time).
+// Without this, reobfJar produces Notch names (afh, df, pk …) and Mixin
+// throws InvalidMixinException "Super class 'afh' not found".
+afterEvaluate {
+    reobf {
+        jar {
+            mappingType = 'SEARGE'
+        }
+    }
+}
+
 processResources {
     inputs.files "src/main/resources"
     outputs.dir "build/classes/main"
