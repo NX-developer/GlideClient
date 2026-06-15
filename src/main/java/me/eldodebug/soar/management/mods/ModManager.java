@@ -135,6 +135,9 @@ public class ModManager {
 		mods.add(new WeatherChangerMod());
 		mods.add(new WeatherDisplayMod());
 		mods.add(new ZoomMod());
+		mods.add(new AutoRespawnMod());
+		mods.add(new AntiAFKMod());
+		mods.add(new ChatSpamFilterMod());
 	}
 	
 	public ArrayList<Mod> getMods() {

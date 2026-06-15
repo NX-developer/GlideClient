@@ -148,7 +148,13 @@ public enum TranslateText {
 	SEARCH_FAILED("text.search_failed"), SPOTIFY_AUTH_MANUAL_REQUIRED("Please authorize in the browser and then click 'Complete Authorization'"), SPOTIFY_AUTH_SUCCESS("Authorization completed successfully"), SPOTIFY_AUTH_TOKEN_RECEIVED("text.spotify.auth.token_received"),
 	SPOTIFY_NO_ACTIVE_DEVICE("text.spotify.no_active_device"), SPOTIFY_PLAYBACK_STARTED("text.spotify.playback.started"), SPOTIFY_FAIL_BROWSER("text.spotify.fail_browser"), SPOTIFY_CONNECT("text.spotify.connect"), AUTO_GL("text.autogl"), AUTO_GL_DELAY("text.autogldelay"),
 	UI_SOUNDS("text.ui.sounds"), UI_SOUNDS_DESCRIPTION("text.ui.sounds.description") ,EXIT_WORLD_SINGLEPLAYER("text.gamemenu.exitworldsingleplayer"), OPEN_MOD_MENU("text.gamemenu.openglidemenu"), EDIT_HUD("text.gamemenu.edithud"), GRADIENT_SIMPLE("text.gradientsimple"), GENERAL("text.general"),  GENERAL_DESCRIPTION("text.general.description"),
-	UI_BLUR("text.ui.blur"), MC_FONT("text.hud.mcfont"), CHANGELOG("text.changelog"), NEWS("text.news"), SEARCH("text.search");
+	UI_BLUR("text.ui.blur"), MC_FONT("text.hud.mcfont"), CHANGELOG("text.changelog"), NEWS("text.news"), SEARCH("text.search"),
+	AUTO_RESPAWN("text.autorespawn.name"), AUTO_RESPAWN_DESCRIPTION("text.autorespawn.description"),
+	ANTI_AFK("text.antiafk.name"), ANTI_AFK_DESCRIPTION("text.antiafk.description"),
+	INTERVAL("text.interval"), JUMP("text.jump"),
+	CHAT_SPAM_FILTER("text.chatspamfilter.name"), CHAT_SPAM_FILTER_DESCRIPTION("text.chatspamfilter.description"),
+	SIMILARITY_THRESHOLD("text.similaritythreshold"), MAX_REPEATED("text.maxrepeated"),
+	BLOCK_CAPS("text.blockcaps"), CAPS_THRESHOLD("text.capsthreshold");
 
 	private String key, text;
 
