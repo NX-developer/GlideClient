@@ -2,7 +2,6 @@ package me.eldodebug.soar.injection.mixin;
 
 import java.io.File;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -17,36 +16,21 @@ import net.minecraft.launchwrapper.LaunchClassLoader;
 
 public class GlideTweaker implements ITweaker {
 
-    private final List<String> launchArguments = new ArrayList<>();
-
 	public static boolean hasOptifine = false;
-	
+
     @Override
     public void acceptOptions(List<String> args, File gameDir, File assetsDir, String profile) {
-    	
     	try {
 			Class.forName("optifine.Patcher");
 			hasOptifine = true;
+		} catch (ClassNotFoundException e) {
 		}
-		catch(ClassNotFoundException e) {
-		}
-		
-        this.launchArguments.addAll(args);
-
-        if (profile != null) {
-            launchArguments.add("--version");
-            launchArguments.add(profile);
-        }
-
-        if (assetsDir != null) {
-            launchArguments.add("--assetsDir");
-            launchArguments.add(assetsDir.getAbsolutePath());
-        }
-
-        if (gameDir != null) {
-            launchArguments.add("--gameDir");
-            launchArguments.add(gameDir.getAbsolutePath());
-        }
+        // GlideTweaker only bootstraps Mixin – it does not need to forward any
+        // launch arguments. FMLTweaker already handles all Minecraft args
+        // (--username, --version, --gameDir, --assetsDir, --width, --height …).
+        // Echoing them here would cause duplicates, which crashes jopt-simple
+        // with MultipleArgumentsForOptionException on Android launchers that
+        // explicitly pass --width / --height for screen dimensions.
     }
 
     @Override
@@ -91,7 +75,7 @@ public class GlideTweaker implements ITweaker {
 
     @Override
     public String[] getLaunchArguments() {
-        return launchArguments.toArray(new String[0]);
+        return new String[0];
     }
     
     @SuppressWarnings("unchecked")
